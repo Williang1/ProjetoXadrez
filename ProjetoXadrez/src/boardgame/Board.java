@@ -1,8 +1,4 @@
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package boardgame;
 
 /**
@@ -15,34 +11,58 @@ public class Board {
     private Piece[][] pieces;
 
     public Board(int rows, int columns) {
+        if (rows <1 || columns<1){
+            throw new BoardException("Erro ao criar tabuleiro: é necessário criar ao menos uma linha e uma coluna ");
+        }
         this.rows = rows;
         this.columns = columns;
         pieces = new Piece[rows][columns];
        
     }
     public Piece piece(int row, int column){
+       if(!positionExists(row, column)){
+           throw new BoardException("Sem posição no tabuleiro");
+       }
         return pieces [row] [column];
         
     }
     public Piece piece(Position position){
+        if(!positionExists(position)){
+           throw new BoardException("Sem posição no tabuleiro");
+       }
         return pieces[position.getRow()][position.getColumn()];
     }
+    
+    
 
     public int getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
+   
 
     public int getColumns() {
         return columns;
     }
 
-    public void setColumns(int columns) {
-        this.columns = columns;
+    
+    public void placePiece(Piece piece, Position position){
+        if (thereIsAPiece(position)){
+          throw new BoardException("Já existe uma peça na posição"+ position);  
+        }
+        pieces[position.getRow()][position.getColumn()]= piece; // pega a matriz e associa a peça informada
+        piece.position = position;       
+        
     }
     
+    private boolean positionExists(int row, int column){
+        return row>= 0 && row<rows && column >=0 && column < columns;
+    }
+    public boolean positionExists(Position position){
+        return positionExists(position.getRow(), position.getColumn());
+}
+    public boolean thereIsAPiece(Position position){
+        return piece(position) != null;
+    }
     
 }

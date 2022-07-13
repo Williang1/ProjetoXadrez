@@ -30,6 +30,6 @@ public class UI {
            
             }
     
-        System.out.print("");
+        System.out.print(" ");
     }
 }
